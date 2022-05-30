@@ -2,7 +2,8 @@
 resource "aws_instance" "dev-instance" {
   ami           = "ami-002068ed284fb165b"
   instance_type = "t2.micro"
-  subnet_id      = element(aws_subnet.private.*.id, 2)
+  count         = 2
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
   vpc_security_group_ids = [ aws_security_group.lb.id ]
   key_name = "dev-server"
   user_data              = <<EOF
