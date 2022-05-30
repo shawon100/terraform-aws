@@ -21,8 +21,9 @@ resource "aws_lb_target_group" "alb-tg" {
 }
 
 resource "aws_lb_target_group_attachment" "ec2-ip" {
+  count = 2
   target_group_arn = aws_lb_target_group.alb-tg.arn
-  target_id        = aws_instance.dev-instance.private_ip
+  target_id        = element(aws_instance.dev-instance.*.private_ip,count.index)
   port             = 80
 }
 
